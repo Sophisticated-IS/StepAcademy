@@ -1,0 +1,17 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:StepAcademyApp"
+             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             x:Class="StepAcademyApp.App">
+    <Application.DataTemplates>
+     
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <themes:BundledTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Lime"/>
+    </Application.Resources>
+    <Application.Styles>
+        <FluentTheme Mode="Light" DensityStyle="Normal"/>
+        <StyleInclude Source="avares://Material.Avalonia/Material.Avalonia.Templates.xaml" />
+    </Application.Styles>
+</Application>

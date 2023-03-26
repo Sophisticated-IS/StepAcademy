@@ -1,8 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using StepAcademyApp.ViewModels;
-using StepAcademyApp.Views;
+using StepAcademyApp.Views.Application;
 
 namespace StepAcademyApp
 {
@@ -17,9 +16,9 @@ namespace StepAcademyApp
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
+                desktop.MainWindow = new LoginWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = null
                 };
             }
 

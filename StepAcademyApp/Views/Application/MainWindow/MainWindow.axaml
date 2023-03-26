@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StepAcademyApp.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="StepAcademyApp">
+        Icon="/Assets/logo.png"
+        Title="Главное окно Step Academy">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
