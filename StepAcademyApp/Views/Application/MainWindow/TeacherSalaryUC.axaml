@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:StepAcademyApp.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="StepAcademyApp.Views.Application.TeacherSalaryUC">
+    <UserControl.DataContext>
+        <viewModels:TeacherSalaryVM />
+    </UserControl.DataContext>
+    
+    <Grid RowDefinitions="Auto,10,*" Margin="5">
+        <TextBlock Grid.Row="0" Text="Выплаты заработной платы" Classes="Headline4" HorizontalAlignment="Center"/>
+        
+        <DataGrid Grid.Row="2"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="True"
+                  AutoGenerateColumns="False"
+                  Items="{Binding РасчетЗарплаты,Mode=OneWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Год"
+                                    Width="*"
+                                    Binding="{Binding Год,Mode=OneWay}"/>
+                <DataGridTextColumn Header="Месяц"
+                                    Width="*"
+                                    Binding="{Binding Месяц,Mode=OneWay}"/>
+                <DataGridTextColumn Header="Выплата"
+                                    Width="*" 
+                                    Binding="{Binding Зарплата,Mode=OneWay}"/>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+    </Grid>
+</UserControl>

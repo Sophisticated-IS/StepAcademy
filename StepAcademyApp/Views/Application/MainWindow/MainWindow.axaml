@@ -17,7 +17,7 @@
     </Design.DataContext>
 
     <Grid Margin="5">
-        <application:TeacherScoresUC/>
+        <application:TeacherSalaryUC/>
     </Grid>
 
 </Window>
