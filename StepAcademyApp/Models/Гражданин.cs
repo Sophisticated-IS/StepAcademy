@@ -4,6 +4,7 @@ namespace StepAcademyApp.Models;
 
 internal abstract class Гражданин
 {
+    public uint  Id { get; set; }
     public uint СерияНомерПаспорта { get; set; }
 
     public string Имя { get; set; }

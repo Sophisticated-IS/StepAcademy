@@ -5,13 +5,13 @@
              xmlns:viewModels="clr-namespace:StepAcademyApp.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="800"
-             d:DesignHeight="450"
+             d:DesignHeight="500"
              x:Class="StepAcademyApp.Views.Application.TeacherScoresUC">
     <UserControl.DataContext>
         <viewModels:TeacherScoresVM/>
     </UserControl.DataContext>
     
-    <Grid RowDefinitions="Auto,10,*" Margin="5">
+    <Grid RowDefinitions="Auto,10,*,10,Auto" Margin="5">
         <TextBlock Grid.Row="0" Text="Итоговые оценки" Classes="Headline4" HorizontalAlignment="Center"/>
         
         <DataGrid Grid.Row="2"
@@ -40,5 +40,10 @@
             </DataGrid.Columns>
             
         </DataGrid>
+        
+        <DockPanel Grid.Row="4" HorizontalAlignment="Stretch">
+            <Button Content="Отмена" DockPanel.Dock="Left"/>
+            <Button Content="Сохранить" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -17,7 +17,26 @@
     </Design.DataContext>
 
     <Grid Margin="5">
-        <application:TeacherSalaryUC/>
+        <!-- <application:TeacherSalaryUC/> -->
+        
+        <TabControl>
+            <TabItem Header="Домашняя страница">
+                <TextBlock Classes="Headline3" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Добро пожаловать ПРЕПОДАВАТЕЛЬ Сова Игорь Сергеевич!"/>
+            </TabItem>
+            
+            <TabItem Header="Оценки студентов">
+                
+            </TabItem>
+            
+            <TabItem Header="Расписание">
+                
+            </TabItem>
+            
+            <TabItem Header="Выплаты заработной платы">
+                
+            </TabItem>
+            
+        </TabControl>
     </Grid>
 
 </Window>
