@@ -17,6 +17,8 @@ internal sealed class StepAcademyDB : DbContext
     public DbSet<Предмет> Предметы { get; set; }
     public DbSet<Специальность> Специальности { get; set; }
     public DbSet<ТипЗанятия> ТипЗанятий { get; set; }
+    public DbSet<УчетныеДанные> УчетныеДанные { get; set; }
+    
 
     public StepAcademyDB(DbContextOptions dbContextOptions) : base(dbContextOptions)
     {
@@ -26,5 +28,9 @@ internal sealed class StepAcademyDB : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Гражданин>().UseTpcMappingStrategy();
+        modelBuilder.Entity<УчетныеДанные>()
+                    .HasIndex(p=>p.Логин)
+                    .IsUnique();
+        
     }
 }
