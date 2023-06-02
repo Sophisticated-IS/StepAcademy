@@ -1,6 +1,6 @@
 ﻿namespace StepAcademyApp.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    internal class MainWindowViewModel : ViewModelBase
     {
 
         public MainWindowViewModel()
