@@ -24,6 +24,8 @@ public class LoginWindowVM : ViewModelBase
         var canSignIn = this.WhenAnyValue(v => v.Login, v => v.Password, (x, y) =>
             !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y));
         AuthUserCommand = ReactiveCommand.CreateFromTask(AuthUser, canSignIn);
+        Login = "test";
+        Password = "test";
     }
 
     private async Task AuthUser()

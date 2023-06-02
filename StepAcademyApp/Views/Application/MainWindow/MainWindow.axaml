@@ -14,32 +14,50 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
 
     <Grid Margin="5">
-        <!-- <application:TeacherSalaryUC/> -->
-        
         <TabControl>
-            <TabItem Header="Домашняя страница ОБЩАЯ">
-                <TextBlock Classes="Headline3" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Добро пожаловать ПРЕПОДАВАТЕЛЬ Сова Игорь Сергеевич!"/>
+            <TabItem Header="Домашняя страница">
+                <Grid RowDefinitions="Auto,Auto,*">
+                    <TextBlock Grid.Row="0"
+                               Classes="Headline6"
+                               Text="{Binding UserName,StringFormat='Добро пожаловать {0}!',Mode=OneTime}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="РОЛЬ:"
+                                   Classes="Headline4" />
+                        <TextBlock Classes="Subtitle1"
+                                   Text="{Binding RoleName,Mode=OneTime}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
-            
-            <TabItem Header="Текущие оценки студента">
+
+            <TabItem Header="Текущие оценки студента" IsVisible="{Binding IsStudentRole,Mode=OneTime}">
                 <application:StudentScoresUC/>
             </TabItem>
             
-            <TabItem Header="Расписание студента">
+            <TabItem Header="Расписание студента"  IsVisible="{Binding IsStudentRole,Mode=OneTime}">
                 <application:StudentScheduleUC/>
             </TabItem>
             
-            <TabItem Header="Выставление оценок учителя">
+            <TabItem Header="Выставление оценок учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
                 <application:TeacherScoresUC/>
             </TabItem>
             
-            <TabItem Header="Расписание учителя">
+            <TabItem Header="Расписание учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
                 <application:TeacherScheduleUC/>
             </TabItem>
-
-            <TabItem Header="Выплаты заработной платы учителя">
+            
+            <TabItem Header="Выплаты заработной платы учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
                 <application:TeacherSalaryUC/>
             </TabItem>
             
