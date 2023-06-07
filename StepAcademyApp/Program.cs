@@ -40,6 +40,7 @@ namespace StepAcademyApp
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StepAcademyDB;Username=postgres;Password=postgres");
             var dbContext = new StepAcademyDB(optionsBuilder.Options);
             DbContextOptions = optionsBuilder.Options;
+            //dbContext.Database.EnsureDeleted();
             if (dbContext.Database.EnsureCreated())
             {
                 /*dbContext.Database.EnsureDeleted();
@@ -228,12 +229,26 @@ namespace StepAcademyApp
                         Соль = "studentHorosh"
                     }
                     );
+                listOcen.Add(
+                    new Models.Оценка
+                    {
+                        Id = (uint)(studId),
+                        IdСтудента = listStudents.Last().Id,
+                        Студент = listStudents.Last(),
+                        IdГруппы = listStudents.Last().IdГруппы.HasValue ? listStudents.Last().IdГруппы.Value : default,
+                        Группа = listStudents.Last().Группа,
+                        IdПредмета = listPredmet[1].Id,
+                        Предмет = listPredmet[1],
+                        Балл = (short)(1),
+                    }
+                    );
                 studId++;
                 for (int i = 0; i < 100; i++)
                 {
                     for (int j = 0; j < 1000; j++, studId++)
                     {
                         if (!(i == 99 && j == 999))
+                        {
                             listStudents.Add(
                                 new Models.Студент
                                 {
@@ -247,29 +262,29 @@ namespace StepAcademyApp
                                     Группа = listGrup[i]
                                 }
                             );
-                        listOcen.Add(
-                            new Models.Оценка
-                            {
-                                Id = (uint)((1000 * i) + j + 1),
-                                IdСтудента = listStudents[(1000 * i) + j].Id,
-                                Студент = listStudents[(1000 * i) + j],
-                                IdГруппы = listStudents[(1000 * i) + j].IdГруппы.HasValue ? listStudents[(1000 * i) + j].IdГруппы.Value : default,
-                                Группа = listStudents[(1000 * i) + j].Группа,
-                                IdПредмета = listPredmet[j % 10].Id,
-                                Предмет = listPredmet[j % 10],
-                                Балл = (short)(j + 1),
-                            }
-                            );
-                        if (!(i== 99 && j== 999))
+                            listOcen.Add(
+                                new Models.Оценка
+                                {
+                                    Id = studId,
+                                    IdСтудента = listStudents.Last().Id,
+                                    Студент = listStudents.Last(),
+                                    IdГруппы = listStudents.Last().IdГруппы.HasValue ? listStudents.Last().IdГруппы.Value : default,
+                                    Группа = listStudents.Last().Группа,
+                                    IdПредмета = listPredmet[j % 10].Id,
+                                    Предмет = listPredmet[j % 10],
+                                    Балл = (short)(j + 1),
+                                }
+                                );
                             listUchetDat.Add(
                                 new Models.УчетныеДанные()
                                 {
-                                    Гражданин = listStudents[(1000 * i) + j + 1],
+                                    Гражданин = listStudents.Last(),
                                     Логин = "student" + (1000 * i) + j + 1,
                                     Пароль = "student" + (1000 * i) + j + 1,
                                     Соль = "studentHorosh" + (1000 * i) + j + 1
                                 }
                             );
+                        }
                     }
 
                 }
