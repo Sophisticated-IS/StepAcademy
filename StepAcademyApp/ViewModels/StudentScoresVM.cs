@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StepAcademyApp.DataBase;
@@ -22,21 +24,28 @@ internal sealed class StudentScoresVM
        ReadScores();
     }
 
-    public void ReadScores()
+    private void ReadScores()
     {
-        var dbContext = new StepAcademyDB(Program.DbContextOptions);
-        var scores = dbContext.Оценки.Where(x => x.IdСтудента == Program.CurrentUser.Id)
-                              .Include(x=>x.Группа).Include(x=>x.Предмет).ToList();
-        Оценки.Clear();
-        foreach (var score in scores)
+        try
         {
-            Оценки.Add(new StudentScore
+            var dbContext = new StepAcademyDB(Program.DbContextOptions);
+            var scores = dbContext.Оценки.Where(x => x.IdСтудента == Program.CurrentUser.Id)
+                                  .Include(x=>x.Группа).Include(x=>x.Предмет).ToList();
+            Оценки.Clear();
+            foreach (var score in scores)
             {
-                НазваниеПредмета = score.Предмет.Name,
-                Специальность = score.Группа.Специальность.Name,
-                Отделение = score.Группа.Отделение.Name,
-                Оценка = score.Балл.ToString()
-            });
+                Оценки.Add(new StudentScore
+                {
+                    НазваниеПредмета = score.Предмет.Name,
+                    Специальность = score.Группа.Специальность.Name,
+                    Отделение = score.Группа.Отделение.Name,
+                    Оценка = score.Балл.ToString()
+                });
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine(exception);
         }
     } 
 }
