@@ -1,13 +1,16 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using StepAcademyApp.DataBase;
 
 
 namespace StepAcademyApp.ViewModels;
 
 internal sealed class StudentScoresVM
 {
-    public ObservableCollection<MockClass> Оценки { get; } = new();
-
-    internal sealed class MockClass
+    public ObservableCollection<StudentScore> Оценки { get; } = new();
+    
+    internal sealed class StudentScore
     {
         public string Специальность { get; set; }
         public string Отделение { get; set; }
@@ -16,51 +19,24 @@ internal sealed class StudentScoresVM
     } 
     public StudentScoresVM()
     {
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "5"
-        });
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "4"
-        });
-        
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "3"
-        });
-
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "2"
-        });
-        
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "1"
-        });
-        
-        Оценки.Add(new MockClass
-        {
-            Специальность = "Информатика",
-            Отделение = "ИСТИ",
-            НазваниеПредмета = "Основы программирования",
-            Оценка = "0"
-        });
+       ReadScores();
     }
+
+    public void ReadScores()
+    {
+        var dbContext = new StepAcademyDB(Program.DbContextOptions);
+        var scores = dbContext.Оценки.Where(x => x.IdСтудента == Program.CurrentUser.Id)
+                              .Include(x=>x.Группа).Include(x=>x.Предмет).ToList();
+        Оценки.Clear();
+        foreach (var score in scores)
+        {
+            Оценки.Add(new StudentScore
+            {
+                НазваниеПредмета = score.Предмет.Name,
+                Специальность = score.Группа.Специальность.Name,
+                Отделение = score.Группа.Отделение.Name,
+                Оценка = score.Балл.ToString()
+            });
+        }
+    } 
 }
