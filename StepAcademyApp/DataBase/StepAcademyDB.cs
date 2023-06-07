@@ -29,8 +29,7 @@ internal sealed class StepAcademyDB : DbContext
     {
         modelBuilder.Entity<Гражданин>().UseTpcMappingStrategy();
         modelBuilder.Entity<УчетныеДанные>()
-                    .HasIndex(p=>p.Логин)
-                    .IsUnique();
+                    .HasKey(p=>p.Логин);
         
     }
 }
