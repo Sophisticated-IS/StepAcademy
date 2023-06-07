@@ -40,7 +40,6 @@ namespace StepAcademyApp
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StepAcademyDB;Username=postgres;Password=postgres");
             var dbContext = new StepAcademyDB(optionsBuilder.Options);
             DbContextOptions = optionsBuilder.Options;
-            dbContext.Database.EnsureDeleted();
             if (dbContext.Database.EnsureCreated())
             {
                 /*dbContext.Database.EnsureDeleted();
