@@ -40,6 +40,7 @@ namespace StepAcademyApp
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StepAcademyDB;Username=postgres;Password=postgres");
             var dbContext = new StepAcademyDB(optionsBuilder.Options);
             DbContextOptions = optionsBuilder.Options;
+            dbContext.Database.EnsureDeleted();
             if (dbContext.Database.EnsureCreated())
             {
                 /*dbContext.Database.EnsureDeleted();
@@ -124,28 +125,30 @@ namespace StepAcademyApp
                             ЧасоваяОплата = (decimal)((i + 1) * 100.1),
                         }
                         );
-                    listPrepod.Add(
-                        new Models.Преподаватель
-                        {
-                            Id = (uint)(i + 2),
-                            СерияНомерПаспорта = (uint)(i + 2),
-                            Имя = "Имя " + (i + 1),
-                            Фамилия = "Фамилия " + (i + 1),
-                            Отчество = "Отчество " + (i + 1),
-                            ДатаРождения = new DateTime(System.DateTime.Now.Ticks + i + 1, DateTimeKind.Utc),
-                            НомерТелефона = $"89{i + 1}",
-                            Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + i + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc))
-                        }
+                    if (i != 99)
+                        listPrepod.Add(
+                            new Models.Преподаватель
+                            {
+                                Id = (uint)(i + 2),
+                                СерияНомерПаспорта = (uint)(i + 2),
+                                Имя = "Имя " + (i + 1),
+                                Фамилия = "Фамилия " + (i + 1),
+                                Отчество = "Отчество " + (i + 1),
+                                ДатаРождения = new DateTime(System.DateTime.Now.Ticks + i + 1, DateTimeKind.Utc),
+                                НомерТелефона = $"89{i + 1}",
+                                Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + i + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc))
+                            }
                         );
-                    listUchetDat.Add(
-                    new Models.УчетныеДанные()
-                    {
-                        Гражданин = listPrepod[i],
-                        Логин = "teacher" + i,
-                        Пароль = "teacher" + i,
-                        Соль = "teacherHorosh" + i
-                    }
-                    );
+                    if (i != 99)
+                        listUchetDat.Add(
+                            new Models.УчетныеДанные()
+                            {
+                                Гражданин = listPrepod[i + 1],
+                                Логин = "teacher" + i,
+                                Пароль = "teacher" + i,
+                                Соль = "teacherHorosh" + i
+                            }
+                        );
                     listZarplat.Add(
                         new Models.Зарплата
                         {
@@ -183,8 +186,8 @@ namespace StepAcademyApp
                         }
                         );
                 }
-                listPrepod.RemoveAt(listPrepod.Count - 1);
-                listUchetDat.RemoveAt(listUchetDat.Count - 1);
+                //listPrepod.RemoveAt(listPrepod.Count - 1);
+                //listUchetDat.RemoveAt(listUchetDat.Count - 1);
                 dbContext.ОплатаЗанятий.AddRange(
                     listOplataZan
                         );
@@ -231,18 +234,19 @@ namespace StepAcademyApp
                 {
                     for (int j = 0; j < 1000; j++, studId++)
                     {
-                        listStudents.Add(
-                            new Models.Студент
-                            {
-                                Id = studId,
-                                СерияНомерПаспорта = (uint)(((1000 * i) + j + 1) + 100000),
-                                Имя = "Имя " + (1000 * i) + j + 1,
-                                Фамилия = "Фамилия " + (1000 * i) + j + 1,
-                                Отчество = "Отчество " + (1000 * i) + j + 1,
-                                ДатаРождения = new DateTime(System.DateTime.Now.Ticks + i, DateTimeKind.Utc),
-                                IdГруппы = listGrup[i].Id,
-                                Группа = listGrup[i]
-                            }
+                        if (!(i == 99 && j == 999))
+                            listStudents.Add(
+                                new Models.Студент
+                                {
+                                    Id = studId,
+                                    СерияНомерПаспорта = (uint)(((1000 * i) + j + 1) + 100000),
+                                    Имя = "Имя " + (1000 * i) + j + 1,
+                                    Фамилия = "Фамилия " + (1000 * i) + j + 1,
+                                    Отчество = "Отчество " + (1000 * i) + j + 1,
+                                    ДатаРождения = new DateTime(System.DateTime.Now.Ticks + i, DateTimeKind.Utc),
+                                    IdГруппы = listGrup[i].Id,
+                                    Группа = listGrup[i]
+                                }
                             );
                         listOcen.Add(
                             new Models.Оценка
@@ -257,22 +261,26 @@ namespace StepAcademyApp
                                 Балл = (short)(j + 1),
                             }
                             );
-                        listUchetDat.Add(
-                            new Models.УчетныеДанные()
-                            {
-                                Гражданин = listStudents[(1000 * i) + j + 1],
-                                Логин = "student",
-                                Пароль = "student",
-                                Соль = "studentHorosh"
-                            }
+                        if (!(i== 99 && j== 999))
+                            listUchetDat.Add(
+                                new Models.УчетныеДанные()
+                                {
+                                    Гражданин = listStudents[(1000 * i) + j + 1],
+                                    Логин = "student" + (1000 * i) + j + 1,
+                                    Пароль = "student" + (1000 * i) + j + 1,
+                                    Соль = "studentHorosh" + (1000 * i) + j + 1
+                                }
                             );
                     }
 
                 }
-                listStudents.RemoveAt(listStudents.Count - 1);
-                listUchetDat.RemoveAt(listUchetDat.Count - 1);
+                //listStudents.RemoveAt(listStudents.Count - 1);
+                //listUchetDat.RemoveAt(listUchetDat.Count - 1);
                 dbContext.Студенты.AddRange(
                         listStudents
+                            );
+                dbContext.УчетныеДанные.AddRange(
+                        listUchetDat
                             );
                 dbContext.Оценки.AddRange(
                         listOcen
