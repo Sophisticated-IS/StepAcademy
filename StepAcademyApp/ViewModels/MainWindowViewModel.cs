@@ -1,4 +1,5 @@
 ﻿using ReactiveUI.Fody.Helpers;
+using StepAcademyApp.Models;
 
 namespace StepAcademyApp.ViewModels
 {
@@ -6,16 +7,17 @@ namespace StepAcademyApp.ViewModels
     {
 
         [Reactive]
-        public string RoleName { get; set; } = "Студент";
+        public string RoleName { get; set; }
         [Reactive]
-        public string UserName { get; set; } = "Сова Игорь Сергеевич";
+        public string UserName { get; set; }
 
         public bool IsStudentRole { get; set; } = true;
         
         
         public MainWindowViewModel()
         {
-            
+            RoleName = Program.CurrentUser is Студент? "Студент":"Преподаватель";
+            UserName = Program.CurrentUser.Имя + " " + Program.CurrentUser.Фамилия + " " + Program.CurrentUser.Отчество;
         }
     }
 }
