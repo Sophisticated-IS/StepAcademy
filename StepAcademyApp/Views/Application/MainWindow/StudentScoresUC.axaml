@@ -12,9 +12,6 @@
   </UserControl.DataContext>
     
     <Grid RowDefinitions="Auto,Auto,*" Margin="5">
-        <TextBlock Grid.Row="0" Text="Оценки студента: Сова Игорь Сергеевич" Classes="Headline4" HorizontalAlignment="Center"/>
-        <Separator Grid.Row="1" Height="10" Background="Transparent"/>
-        
         <DataGrid Grid.Row="2"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"
