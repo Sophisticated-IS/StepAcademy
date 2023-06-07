@@ -31,9 +31,11 @@
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-                        <TextBlock Text="РОЛЬ:"
+                        <TextBlock Text="РОЛЬ:   "
                                    Classes="Headline4" />
                         <TextBlock Classes="Subtitle1"
+                                   Padding="5"
+                                   Foreground="Blue"
                                    Text="{Binding RoleName,Mode=OneTime}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
