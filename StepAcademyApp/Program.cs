@@ -6,16 +6,20 @@ using StepAcademyApp.DataBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StepAcademyApp.Models;
 
 namespace StepAcademyApp
 {
     class Program
     {
+        public static DbContextOptions DbContextOptions;
+        public static Гражданин CurrentUser { get; set; }
+
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
-        public static void Main(string[] args) 
+        public static void Main(string[] args)
         {
             DataBaseInit();
             BuildAvaloniaApp()
@@ -35,6 +39,7 @@ namespace StepAcademyApp
             var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StepAcademyDB;Username=postgres;Password=postgres");
             var dbContext = new StepAcademyDB(optionsBuilder.Options);
+            DbContextOptions = optionsBuilder.Options;
             if (dbContext.Database.EnsureCreated())
             {
                 /*dbContext.Database.EnsureDeleted();
