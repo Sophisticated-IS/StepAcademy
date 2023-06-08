@@ -1,4 +1,6 @@
-﻿namespace StepAcademyApp.Models;
+﻿using System;
+
+namespace StepAcademyApp.Models;
 
 internal sealed class Нагрузка
 {
@@ -7,7 +9,8 @@ internal sealed class Нагрузка
     public Преподаватель Преподаватель { get; set; }
     public uint IdГруппы { get; set; }
     public ГруппаСтудентов Группа { get; set; }
-    public uint КолвоЧасов { get; set; }
+    public DateTime ВремяНачалаЗанятия { get; set; }
+    public DateTime ВремяКонцаЗанятия { get; set; }
     public uint IdПредмета { get; set; }
     public Предмет Предмет { get; set; }
     public uint IdТипЗанятия { get; set; }

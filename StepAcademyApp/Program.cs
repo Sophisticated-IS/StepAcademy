@@ -170,6 +170,8 @@ namespace StepAcademyApp
                             Специальность = listSpecial[i % 10],
                         }
                         );
+                    var dt = DateTime.Now;
+                    var startDt = dt.AddMonths(-dt.Month).AddMonths(i % 12);
                     listNagruzka.Add(
                         new Models.Нагрузка
                         {
@@ -182,7 +184,8 @@ namespace StepAcademyApp
                             Преподаватель = listPrepod[i],
                             IdТипЗанятия = listTipZan[i % 10].Id,
                             ТипЗанятия = listTipZan[i % 10],
-                            КолвоЧасов = (uint)(i + 100),
+                            ВремяНачалаЗанятия = startDt,
+                            ВремяКонцаЗанятия = startDt.AddHours(1.5),
                         }
                         );
                 }
