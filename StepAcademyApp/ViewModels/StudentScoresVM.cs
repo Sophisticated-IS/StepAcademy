@@ -30,7 +30,12 @@ internal sealed class StudentScoresVM
         {
             var dbContext = new StepAcademyDB(Program.DbContextOptions);
             var scores = dbContext.Оценки.Where(x => x.IdСтудента == Program.CurrentUser.Id)
-                                  .Include(x=>x.Группа).Include(x=>x.Предмет).ToList();
+                                  .Include(x=>x.Группа)
+                                  .Include(x=>x.Группа.Специальность)
+                                  .Include(x=>x.Группа.Отделение)
+                                  .Include(x=>x.Предмет)
+                                  
+                                  .ToList();
             Оценки.Clear();
             foreach (var score in scores)
             {
