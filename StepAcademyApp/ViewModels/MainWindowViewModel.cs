@@ -11,7 +11,8 @@ namespace StepAcademyApp.ViewModels
         [Reactive]
         public string UserName { get; set; }
 
-        public bool IsStudentRole { get; set; } = true;
+        [Reactive]
+        public bool IsStudentRole { get; set; }
         
         
         public MainWindowViewModel()

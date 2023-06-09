@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:application="clr-namespace:StepAcademyApp.Views.Application"
+        xmlns:views="clr-namespace:StepAcademyApp.Views"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
@@ -44,23 +45,23 @@
             </TabItem>
 
             <TabItem Header="Текущие оценки студента" IsVisible="{Binding IsStudentRole,Mode=OneTime}">
-                <application:StudentScoresUC/>
+                    <application:StudentScoresUC/>
             </TabItem>
             
             <TabItem Header="Расписание студента"  IsVisible="{Binding IsStudentRole,Mode=OneTime}">
-                <application:StudentScheduleUC/>
+                    <application:StudentScheduleUC/>
             </TabItem>
             
             <TabItem Header="Выставление оценок учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
-                <application:TeacherScoresUC/>
+                    <application:TeacherScoresUC/>
             </TabItem>
             
             <TabItem Header="Расписание учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
-                <application:TeacherScheduleUC/>
+                    <application:TeacherScheduleUC/>
             </TabItem>
             
             <TabItem Header="Выплаты заработной платы учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
-                <application:TeacherSalaryUC/>
+                    <application:TeacherSalaryUC/>
             </TabItem>
             
         </TabControl>

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using StepAcademyApp.DataBase;
+using StepAcademyApp.Models;
 
 namespace StepAcademyApp.ViewModels;
 
@@ -18,6 +19,8 @@ internal sealed class TeacherSalaryVM : ViewModelBase
     public ObservableCollection<TeacherSalary> РасчетЗарплаты { get; } = new();
     public TeacherSalaryVM()
     {
+        if (Program.CurrentUser is not Преподаватель) return;
+
         ReadSalary();
     }
 

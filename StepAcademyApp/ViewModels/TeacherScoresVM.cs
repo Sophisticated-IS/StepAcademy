@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using StepAcademyApp.Models;
 
 namespace StepAcademyApp.ViewModels;
 
@@ -16,6 +17,8 @@ internal sealed class TeacherScoresVM : ViewModelBase
     } 
     public TeacherScoresVM()
     {
+        if (Program.CurrentUser is not Преподаватель) return;
+
         Оценки.Add(new MockClass
         {
             ФИОСтудента = "Иванов Иван Иванович",

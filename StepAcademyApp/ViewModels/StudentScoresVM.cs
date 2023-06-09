@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StepAcademyApp.DataBase;
+using StepAcademyApp.Models;
 
 
 namespace StepAcademyApp.ViewModels;
@@ -21,6 +22,8 @@ internal sealed class StudentScoresVM : ViewModelBase
     } 
     public StudentScoresVM()
     {
+        if (Program.CurrentUser is not Студент) return;
+
        ReadScores();
     }
 

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using StepAcademyApp.DataBase;
+using StepAcademyApp.Models;
 
 namespace StepAcademyApp.ViewModels;
 
@@ -30,6 +31,8 @@ internal sealed class TeacherScheduleVM : ViewModelBase
     public int PageNumberDay { get; set; }
     public TeacherScheduleVM()
     {
+        if (Program.CurrentUser is not Преподаватель) return;
+
         this.WhenAnyValue(x => x.PageNumberDay).Subscribe(x =>
         {
             if (x<=0)
