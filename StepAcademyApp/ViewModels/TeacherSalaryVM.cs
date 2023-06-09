@@ -102,6 +102,8 @@ internal sealed class TeacherSalaryVM : ViewModelBase
                 firstOrDefault.СуммаВыплат = teacherSalary.Зарплата;
                 dbContext.Зарплаты.Update(firstOrDefault);
             }
+
+            dbContext.SaveChanges();
         }
     }
 
