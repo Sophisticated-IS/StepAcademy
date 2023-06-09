@@ -36,35 +36,33 @@ internal sealed class TeacherScheduleVM : ViewModelBase
             {
                 PageNumberDay = 1;
             }
-            else
+           
+            var dt = DateTime.Now;
+            CurrentDateTime = dt.AddDays(-dt.Day).AddDays(PageNumberDay).ToString("dddd, dd MMMM, yyyy");
+            using var dbContext = new StepAcademyDB(Program.DbContextOptions);
+            var schedule = dbContext.Нагрузка
+                                    .Where(x => x.IdПреподавателя == Program.CurrentUser.Id
+                                                && x.ВремяНачалаЗанятия.Date.Day == PageNumberDay
+                                                && x.ВремяКонцаЗанятия.Date.Month == DateTime.Now.Month
+                                                && x.ВремяКонцаЗанятия.Date.Year == DateTime.Now.Year)
+                                    .Include(x=>x.Преподаватель)
+                                    .Include(x=>x.ТипЗанятия)
+                                    .Include(x=>x.Предмет)
+                                    .ToList();
+            Расписание.Clear();
+            foreach (var item in schedule)
             {
-                var dt = DateTime.Now;
-                CurrentDateTime = dt.AddDays(-dt.Day).AddDays(PageNumberDay).ToString("dddd, dd MMMM, yyyy");
-                using var dbContext = new StepAcademyDB(Program.DbContextOptions);
-                var schedule = dbContext.Нагрузка
-                                        .Where(x => x.IdПреподавателя == Program.CurrentUser.Id
-                                                    && x.ВремяНачалаЗанятия.Date.Day == PageNumberDay
-                                                    && x.ВремяКонцаЗанятия.Date.Month == DateTime.Now.Month
-                                                    && x.ВремяКонцаЗанятия.Date.Year == DateTime.Now.Year)
-                                        .Include(x=>x.Преподаватель)
-                                        .Include(x=>x.ТипЗанятия)
-                                        .Include(x=>x.Предмет)
-                                        .ToList();
-                Расписание.Clear();
-                foreach (var item in schedule)
+                Расписание.Add(new TeacherScheduleVM.TeachSchedule()
                 {
-                    Расписание.Add(new TeacherScheduleVM.TeachSchedule()
-                    {
-                        Начало = item.ВремяНачалаЗанятия.TimeOfDay.ToString(),
-                        Конец = item.ВремяКонцаЗанятия.TimeOfDay.ToString(),
-                        ФИОПрепода = item.Преподаватель.Имя + " " + item.Преподаватель.Фамилия + " " + item.Преподаватель.Отчество,
-                        ТипЗанятия = item.ТипЗанятия.Название,
-                        Предмет = item.Предмет.Название
+                    Начало = item.ВремяНачалаЗанятия.TimeOfDay.ToString(),
+                    Конец = item.ВремяКонцаЗанятия.TimeOfDay.ToString(),
+                    ФИОПрепода = item.Преподаватель.Имя + " " + item.Преподаватель.Фамилия + " " + item.Преподаватель.Отчество,
+                    ТипЗанятия = item.ТипЗанятия.Название,
+                    Предмет = item.Предмет.Название
                         
-                    });
-                }
-
+                });
             }
+                
             
         });
         
