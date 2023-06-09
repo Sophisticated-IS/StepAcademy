@@ -54,22 +54,22 @@ namespace StepAcademyApp
                     listOtdel.Add(new Models.Отделение
                     {
                         Id = (uint)(i + 1),
-                        Name = "Название отделения " + i
+                        Название = "Название отделения " + i
                     });
                     listSpecial.Add(new Models.Специальность
                     {
                         Id = (uint)(i + 1),
-                        Name = "Название специальности " + i
+                        Название = "Название специальности " + i
                     });
                     listPredmet.Add(new Models.Предмет
                     {
                         Id = (uint)(i + 1),
-                        Name = "Название предмета " + i
+                        Название = "Название предмета " + i
                     });
                     listTipZan.Add(new Models.ТипЗанятия
                     {
                         Id = (uint)(i + 1),
-                        Name = "Название занятия " + i
+                        Название = "Название занятия " + i
                     });
                 }
                 dbContext.Отделения.AddRange(
@@ -171,7 +171,7 @@ namespace StepAcademyApp
                         }
                         );
                     var dt = DateTime.Now;
-                    var startDt = dt.AddMonths(-dt.Month).AddMonths(i % 12);
+                    var startDt = dt.AddMonths(-dt.Month).AddMonths(i % 12).ToUniversalTime();
                     listNagruzka.Add(
                         new Models.Нагрузка
                         {
