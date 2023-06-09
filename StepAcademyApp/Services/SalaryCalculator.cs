@@ -20,7 +20,7 @@ internal sealed class SalaryCalculator
         using var dbcontext = new StepAcademyDB(Program.DbContextOptions);
         var нагрузкаМесяц = dbcontext.Нагрузка.Where(x => x.ВремяКонцаЗанятия.Month == month)
                                      .Include(x=>x.Предмет)
-                                     .Include(x=>x.ТипЗанятия);
+                                     .Include(x=>x.ТипЗанятия).ToList();
 
         var расчётЗП = 0m;
         foreach (var нагрузка in нагрузкаМесяц)
