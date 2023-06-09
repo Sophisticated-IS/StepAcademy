@@ -11,7 +11,7 @@
         <viewModels:TeacherSalaryVM />
     </UserControl.DataContext>
     
-    <Grid RowDefinitions="Auto,10,*" Margin="5">
+    <Grid RowDefinitions="Auto,10,*,10,Auto" Margin="5">
         <TextBlock Grid.Row="0" Text="Выплаты заработной платы" Classes="Headline4" HorizontalAlignment="Center"/>
         
         <DataGrid Grid.Row="2"
@@ -22,6 +22,9 @@
                   AutoGenerateColumns="False"
                   Items="{Binding РасчетЗарплаты,Mode=OneWay}">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО"
+                                    Width="*"
+                                    Binding="{Binding ФИО,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Год"
                                     Width="*"
                                     Binding="{Binding Год,Mode=OneWay}"/>
@@ -34,5 +37,17 @@
             </DataGrid.Columns>
             
         </DataGrid>
+        
+        <Grid Grid.Row="4" RowDefinitions="Auto,15,Auto" IsVisible="{Binding IsAdmin,Mode=OneWay}">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <TextBlock Text="Месяц рассчета:" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SalaryCalcMonth,Mode=TwoWay}"/>
+            </StackPanel>
+            
+            <DockPanel Grid.Row="2">
+                <Button Content="Рассчитать" DockPanel.Dock="Left" Command="{Binding CalcSalaryCommand,Mode=OneWay}"/>
+                <Button Content="Сохранить" DockPanel.Dock="Right" Command="{Binding SaveSalaryCommand,Mode=OneWay}"/>
+            </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>
