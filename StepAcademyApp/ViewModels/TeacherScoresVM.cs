@@ -2,7 +2,7 @@
 
 namespace StepAcademyApp.ViewModels;
 
-internal sealed class TeacherScoresVM
+internal sealed class TeacherScoresVM : ViewModelBase
 {
     public ObservableCollection<MockClass> Оценки { get; } = new();
 

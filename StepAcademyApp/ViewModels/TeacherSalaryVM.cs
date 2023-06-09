@@ -6,7 +6,7 @@ using StepAcademyApp.DataBase;
 
 namespace StepAcademyApp.ViewModels;
 
-internal sealed class TeacherSalaryVM
+internal sealed class TeacherSalaryVM : ViewModelBase
 {
     internal sealed class TeacherSalary
     {

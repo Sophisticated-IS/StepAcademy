@@ -8,7 +8,7 @@ using StepAcademyApp.DataBase;
 
 namespace StepAcademyApp.ViewModels;
 
-internal sealed class StudentScoresVM
+internal sealed class StudentScoresVM : ViewModelBase
 {
     public ObservableCollection<StudentScore> Оценки { get; } = new();
     
