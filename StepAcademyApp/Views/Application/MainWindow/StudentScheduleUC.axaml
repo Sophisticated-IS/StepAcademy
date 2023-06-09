@@ -17,7 +17,7 @@
         <Grid RowDefinitions="Auto,*">
             <TextBlock Grid.Row="0"
                        Classes="Headline6"
-                       Text="Понедельник, 27 марта" />
+                       Text="{Binding CurrentDateTime,Mode=OneWay}" />
 
 
             <DataGrid Grid.Row="1"
@@ -26,6 +26,7 @@
                       CanUserResizeColumns="False"
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
+                      IsReadOnly="True"
                       Items="{Binding Расписание,Mode=OneWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Начало"
@@ -53,8 +54,9 @@
                                Padding="0"
                                Margin="0"
                                Grid.Row="1"
-                               PageCount="30"
-                               PageNumb="1">
+                               PageCount="31"
+                               PageNumb="{Binding PageNumberDay,Mode=TwoWay}"
+        >
         </view:PaginatorControl>
     </Grid>
 </UserControl>
