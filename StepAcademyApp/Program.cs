@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using StepAcademyApp.Models;
+using SharpHash.Base;
+using System.Text;
 
 namespace StepAcademyApp
 {
@@ -40,11 +42,9 @@ namespace StepAcademyApp
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StepAcademyDB;Username=postgres;Password=postgres");
             var dbContext = new StepAcademyDB(optionsBuilder.Options);
             DbContextOptions = optionsBuilder.Options;
-            //dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureDeleted();
             if (dbContext.Database.EnsureCreated())
             {
-                /*dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();*/
                 List<Models.Отделение> listOtdel = new List<Models.Отделение>();
                 List<Models.Специальность> listSpecial = new List<Models.Специальность>();
                 List<Models.Предмет> listPredmet = new List<Models.Предмет>();
@@ -101,14 +101,15 @@ namespace StepAcademyApp
                             Отчество = "Отчество " + (1),
                             ДатаРождения = new DateTime(System.DateTime.Now.Ticks + 1, DateTimeKind.Utc),
                             НомерТелефона = $"89{1}",
-                            Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc))
+                            Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc)),
+                            Админ = true
                         }
                         );
                 listUchetDat.Add(
                     new Models.УчетныеДанные() { 
                         Гражданин = listPrepod.LastOrDefault(),
-                        Логин = "teacher",
-                        Пароль = "teacher",
+                        Логин = "teacherAdmin",
+                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin", Encoding.UTF8).ToString(),
                         Соль = "teacherHorosh"
                     }
                     );
@@ -125,7 +126,7 @@ namespace StepAcademyApp
                             ЧасоваяОплата = (decimal)((i + 1) * 100.1),
                         }
                         );
-                    if (i != 99)
+                    //if (i != 99)
                         listPrepod.Add(
                             new Models.Преподаватель
                             {
@@ -136,16 +137,17 @@ namespace StepAcademyApp
                                 Отчество = "Отчество " + (i + 1),
                                 ДатаРождения = new DateTime(System.DateTime.Now.Ticks + i + 1, DateTimeKind.Utc),
                                 НомерТелефона = $"89{i + 1}",
-                                Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + i + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc))
+                                Стаж = (TimeSpan)(DateTime.SpecifyKind(new DateTime(2010 + i + 1, 1, 1, 8, 0, 0), DateTimeKind.Utc) - DateTime.SpecifyKind(new DateTime(2010, 1, 1, 8, 0, 0), DateTimeKind.Utc)),
+                                Админ = false
                             }
                         );
-                    if (i != 99)
+                    //if (i != 99)
                         listUchetDat.Add(
                             new Models.УчетныеДанные()
                             {
                                 Гражданин = listPrepod[i + 1],
                                 Логин = "teacher" + i,
-                                Пароль = "teacher" + i,
+                                Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + i, Encoding.UTF8).ToString(),
                                 Соль = "teacherHorosh" + i
                             }
                         );
@@ -153,8 +155,8 @@ namespace StepAcademyApp
                         new Models.Зарплата
                         {
                             Id = (uint)(i + 1),
-                            IdУчитель = listPrepod[i].Id,
-                            Преподаватель = listPrepod[i],
+                            IdУчитель = listPrepod[i + 1].Id,
+                            Преподаватель = listPrepod[i + 1],
                             Year = (uint)(i + 1),
                             Month = (uint)(i + 1),
                             СуммаВыплат = (decimal)((i + 1) * 100.1),
@@ -180,8 +182,8 @@ namespace StepAcademyApp
                             Группа = listGrup[i],
                             IdПредмета = listPredmet[i % 10].Id,
                             Предмет = listPredmet[i % 10],
-                            IdПреподавателя = listPrepod[i].Id,
-                            Преподаватель = listPrepod[i],
+                            IdПреподавателя = listPrepod[i + 1].Id,
+                            Преподаватель = listPrepod[i + 1],
                             IdТипЗанятия = listTipZan[i % 10].Id,
                             ТипЗанятия = listTipZan[i % 10],
                             ВремяНачалаЗанятия = startDt,
@@ -228,7 +230,7 @@ namespace StepAcademyApp
                     {
                         Гражданин = listStudents.LastOrDefault(),
                         Логин = "student",
-                        Пароль = "student",
+                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("student", Encoding.UTF8).ToString(),
                         Соль = "studentHorosh"
                     }
                     );
@@ -283,7 +285,7 @@ namespace StepAcademyApp
                                 {
                                     Гражданин = listStudents.Last(),
                                     Логин = "student" + (1000 * i) + j + 1,
-                                    Пароль = "student" + (1000 * i) + j + 1,
+                                    Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("student" + (1000 * i) + j + 1, Encoding.UTF8).ToString(),
                                     Соль = "studentHorosh" + (1000 * i) + j + 1
                                 }
                             );

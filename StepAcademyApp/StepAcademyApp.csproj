@@ -33,6 +33,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="Paginator.Avalonia" Version="1.0.0" />
         <PackageReference Include="ReactiveUI.Fody" Version="18.4.44" />
+        <PackageReference Include="SharpHash" Version="1.2.0" />
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
