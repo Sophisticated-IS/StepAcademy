@@ -8,16 +8,16 @@
              d:DesignWidth="800"
              d:DesignHeight="450"
              x:Class="StepAcademyApp.Views.Application.TeacherScheduleUC">
-    <!--  <UserControl.DataContext> -->
-    <!--     <viewModels:StudentScheduleVM /> -->
-    <!-- </UserControl.DataContext> -->
+     <UserControl.DataContext>
+        <viewModels:TeacherScheduleVM />
+    </UserControl.DataContext>
 
     <Grid Margin="5" RowDefinitions="*,Auto,10,Auto">
         
         <Grid RowDefinitions="Auto,*,Auto">
             <TextBlock Grid.Row="0"
                        Classes="Headline6"
-                       Text="Понедельник, 27 марта" />
+                       Text="{Binding CurrentDateTime,Mode=OneWay}"  />
 
 
             <DataGrid Grid.Row="1"
@@ -26,6 +26,7 @@
                       CanUserResizeColumns="False"
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
+                      IsReadOnly="{Binding !IsTeacherAdmin,Mode=OneWay}"
                       Items="{Binding Расписание,Mode=OneWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Начало"
@@ -53,12 +54,16 @@
                                Padding="0"
                                Margin="0"
                                Grid.Row="1"
-                               PageCount="30"
-                               PageNumb="1">
+                               PageCount="31"
+                               PageNumb="{Binding PageNumberDay,Mode=TwoWay}">
         </view:PaginatorControl>
         
         
-        <Button Grid.Row="3"  Content="Отмена" HorizontalAlignment="Left"/>
-        <Button Grid.Row="3"  Content="Сохранить" HorizontalAlignment="Right"/>
+        <Button Grid.Row="3"  
+                Content="Отмена" HorizontalAlignment="Left"
+                IsVisible="{Binding IsTeacherAdmin,Mode=OneWay}"/>
+        <Button Grid.Row="3"  
+                Content="Сохранить" HorizontalAlignment="Right"
+                IsVisible="{Binding IsTeacherAdmin,Mode=OneWay}"/>
     </Grid>
 </UserControl>
