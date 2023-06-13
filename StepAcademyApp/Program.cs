@@ -94,27 +94,60 @@ namespace StepAcademyApp
                 {
                     listZarplat[i].Преподаватель = listPrepod[i];
                 }
-                List<Models.Нагрузка> listNagruzka = new List<Models.Нагрузка>();
-                for (int i = 0; i < 100; i++)
+                List<Models.Нагрузка> listNagruzka = File.ReadAllLines("csv\\nagruzka1.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList();
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka2.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka3.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka4.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka5.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka6.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka7.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka8.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka9.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                listNagruzka.AddRange(File.ReadAllLines("csv\\nagruzka10.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Нагрузка.FromCsv(v))
+                                            .ToList());
+                for (int i = 0; i < 9000; i++)
                 {
-                    var dt = DateTime.Now;
-                    var startDt = dt.AddMonths(-dt.Month).AddMonths(i % 12).ToUniversalTime();
-                    listNagruzka.Add(
-                        new Models.Нагрузка
-                        {
-                            Id = (uint)(i + 1),
-                            IdГруппы = listGrup[i].Id,
-                            Группа = listGrup[i],
-                            IdПредмета = listPredmet[i % 10].Id,
-                            Предмет = listPredmet[i % 10],
-                            IdПреподавателя = listPrepod[i].Id,
-                            Преподаватель = listPrepod[i],
-                            IdТипЗанятия = listTipZan[i % 10].Id,
-                            ТипЗанятия = listTipZan[i % 10],
-                            ВремяНачалаЗанятия = startDt,
-                            ВремяКонцаЗанятия = startDt.AddHours(1.5),
-                        }
-                    );
+                    listNagruzka[i].Группа = listGrup[(int)listNagruzka[i].IdГруппы - 1];
+                    listNagruzka[i].Предмет = listPredmet[(int)listNagruzka[i].IdПредмета - 1];
+                    listNagruzka[i].Преподаватель = listPrepod[(int)listNagruzka[i].IdПреподавателя - 1];
+                    listNagruzka[i].ТипЗанятия = listTipZan[(int)listNagruzka[i].IdТипЗанятия - 1];
+                    Random gen = new Random();
+                    int dd = i / 100;
+                    int day = dd % 30 == 0 ? 30 : dd % 30;
+                    string date = day > 9 ? $"2023-06-{day}" : $"2023-06-0{day}";
+                    DateTime dt = DateTime.ParseExact(date, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                    dt = dt.AddHours(8 + 2 * gen.Next(0, 3)).AddMinutes(gen.Next(0, 3) * 10);
+                    listNagruzka[i].ВремяНачалаЗанятия = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+                    listNagruzka[i].ВремяКонцаЗанятия = DateTime.SpecifyKind(dt.AddHours(1.5), DateTimeKind.Utc);
                 }
                 List<Models.УчетныеДанные> listUchetDat = new List<Models.УчетныеДанные>();
                 for (int i = 0; i < 100; i++)
@@ -123,9 +156,9 @@ namespace StepAcademyApp
                         new Models.УчетныеДанные()
                         {
                             Гражданин = listPrepod[i],
-                            Логин = "teacher" + i,
-                            Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + i, Encoding.UTF8).ToString(),
-                            Соль = "teacherHorosh" + i
+                            Логин = "teacher" + $"{i + 1}",
+                            Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + $"{i + 1}", Encoding.UTF8).ToString(),
+                            Соль = "teacherHorosh" + $"{i + 1}"
                         }
                     );
                 }
@@ -183,26 +216,26 @@ namespace StepAcademyApp
                     }
                 );
                 dbContext.Отделения.AddRange(
-                        listOtdel
-                        );
+                    listOtdel
+                    );
                 dbContext.Специальности.AddRange(
-                        listSpecial
-                        );
+                    listSpecial
+                    );
                 dbContext.Предметы.AddRange(
-                        listPredmet
-                        );
+                    listPredmet
+                    );
                 dbContext.ТипЗанятий.AddRange(
-                        listTipZan
-                        );
+                    listTipZan
+                    );
                 dbContext.ОплатаЗанятий.AddRange(
                     listOplataZan
-                        );
+                    );
                 dbContext.Учителя.AddRange(
                     listPrepod
-                        );
+                    );
                 dbContext.Зарплаты.AddRange(
                     listZarplat
-                        );
+                    );
                 dbContext.ГруппыСтудентов.AddRange(
                     listGrup
                     );
@@ -210,14 +243,14 @@ namespace StepAcademyApp
                     listNagruzka
                     );
                 dbContext.Студенты.AddRange(
-                        listStudents
-                            );
+                    listStudents
+                    );
                 dbContext.УчетныеДанные.AddRange(
-                        listUchetDat
-                            );
+                    listUchetDat
+                    );
                 dbContext.Оценки.AddRange(
-                        listOcen
-                            );        
+                    listOcen
+                    );        
                 dbContext.SaveChanges();
             }
         }
@@ -333,9 +366,9 @@ namespace StepAcademyApp
                             new Models.УчетныеДанные()
                             {
                                 Гражданин = listPrepod[i + 1],
-                                Логин = "teacher" + i,
-                                Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + i, Encoding.UTF8).ToString(),
-                                Соль = "teacherHorosh" + i
+                                Логин = "teacher" + $"{i + 1}",
+                                Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + $"{i + 1}", Encoding.UTF8).ToString(),
+                                Соль = "teacherHorosh" + $"{i + 1}"
                             }
                         );
                     listZarplat.Add(
