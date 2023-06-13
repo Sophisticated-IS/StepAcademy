@@ -20,6 +20,11 @@ namespace StepAcademyApp.ViewModels
             RoleName = Program.CurrentUser is Студент? "Студент":"Преподаватель";
             IsStudentRole = Program.CurrentUser is Студент;
             UserName = Program.CurrentUser.Имя + " " + Program.CurrentUser.Фамилия + " " + Program.CurrentUser.Отчество;
+
+            if (Program.CurrentUser is Преподаватель преподаватель && преподаватель.Админ)
+            {
+                RoleName = "Преподаватель - Администратор";
+            }
         }
     }
 }
