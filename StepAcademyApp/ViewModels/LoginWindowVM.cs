@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
@@ -53,20 +54,33 @@ public class LoginWindowVM : ViewModelBase
     {
         using var dbContext = new StepAcademyDB(Program.DbContextOptions);
 
-        
-
         var user = dbContext.УчетныеДанные.Where(x => x.Логин == Login).Include(x => x.Гражданин).FirstOrDefault();
 
         string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Password + user.Соль, Encoding.UTF8).ToString();
 
         if (ps == user.Пароль)
         {
+
+            Models.Аудит аудит;
+
             if (user is null)
             {
+                аудит = new Models.Аудит{
+                    Message = $"Error of login by {Login}",
+                    Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+                };
+                dbContext.Аудит.Add(аудит);
+                dbContext.SaveChanges();
                 return false;
             }
             else
             {
+                аудит = new Models.Аудит{
+                    Message = $"Login by {Login}",
+                    Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+                };
+                dbContext.Аудит.Add(аудит);
+                dbContext.SaveChanges();
                 Program.CurrentUser = user.Гражданин;
                 return true;
             }

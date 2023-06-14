@@ -18,6 +18,7 @@ internal sealed class StepAcademyDB : DbContext
     public DbSet<Специальность> Специальности { get; set; }
     public DbSet<ТипЗанятия> ТипЗанятий { get; set; }
     public DbSet<УчетныеДанные> УчетныеДанные { get; set; }
+    public DbSet<Аудит> Аудит { get; set; }
     
 
     public StepAcademyDB(DbContextOptions dbContextOptions) : base(dbContextOptions)
