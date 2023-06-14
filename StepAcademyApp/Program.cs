@@ -227,7 +227,7 @@ namespace StepAcademyApp
                     new Models.УчетныеДанные() { 
                         Гражданин = listPrepod.LastOrDefault(),
                         Логин = "admin",
-                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin" + saltAdmin, Encoding.UTF8).ToString(),
+                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("adminTop123" + saltAdmin, Encoding.UTF8).ToString(),
                         Соль = saltAdmin
                     }
                 );
