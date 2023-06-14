@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StepAcademyApp.DataBase;
 using StepAcademyApp.Models;
@@ -15,17 +16,17 @@ internal sealed class SalaryCalculator
     }
 
 
-    public decimal Calculate(Преподаватель преподаватель,byte month)
+    public async Task<decimal> Calculate(Преподаватель преподаватель,byte month)
     {
-        using var dbcontext = new StepAcademyDB(Program.DbContextOptions);
-        var нагрузкаМесяц = dbcontext.Нагрузка.Where(x => x.ВремяКонцаЗанятия.Month == month)
+        await using var dbcontext = new StepAcademyDB(Program.DbContextOptions);
+        var нагрузкаМесяц = await dbcontext.Нагрузка.Where(x => x.IdПреподавателя == преподаватель.Id && x.ВремяКонцаЗанятия.Year == DateTime.Now.Year && x.ВремяКонцаЗанятия.Month == month)
                                      .Include(x=>x.Предмет)
-                                     .Include(x=>x.ТипЗанятия).ToList();
+                                     .Include(x=>x.ТипЗанятия).ToListAsync();
 
         var расчётЗП = 0m;
         foreach (var нагрузка in нагрузкаМесяц)
         {
-            var оплата = dbcontext.ОплатаЗанятий.First(x => x.IdПредмет == нагрузка.Предмет.Id
+            var оплата = await dbcontext.ОплатаЗанятий.FirstAsync(x => x.IdПредмет == нагрузка.Предмет.Id
                                                             && x.IdТипЗанятия == нагрузка.ТипЗанятия.Id);
 
             var поправкаНаСтаж = оплата.ЧасоваяОплата * ((decimal)преподаватель.Стаж.TotalDays/365m / 100m);
@@ -35,7 +36,7 @@ internal sealed class SalaryCalculator
         return расчётЗП;
     }
 
-    public decimal Calculate(Преподаватель преподаватель)
+    public Task<decimal> Calculate(Преподаватель преподаватель)
     {
         return Calculate(преподаватель, (byte)DateTime.Now.Month);
     }
