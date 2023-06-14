@@ -35,6 +35,15 @@ namespace StepAcademyApp
                          .LogToTrace()
                          .UseReactiveUI();
 
+        private static Random random = new Random();
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
         public static void FillDbCsv(DataBase.StepAcademyDB dbContext)
         {
             if(dbContext.Database.EnsureCreated()){
@@ -145,7 +154,7 @@ namespace StepAcademyApp
                     int day = dd % 30 == 0 ? 30 : dd % 30;
                     string date = day > 9 ? $"2023-06-{day}" : $"2023-06-0{day}";
                     DateTime dt = DateTime.ParseExact(date, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                    dt = dt.AddHours(8 + 2 * gen.Next(0, 3)).AddMinutes(gen.Next(0, 3) * 10);
+                    dt = dt.AddHours(8 + 2 * (dd / 30 % 3)).AddMinutes(gen.Next(0, 3) * 10);
                     listNagruzka[i].ВремяНачалаЗанятия = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
                     listNagruzka[i].ВремяКонцаЗанятия = DateTime.SpecifyKind(dt.AddHours(1.5), DateTimeKind.Utc);
                 }
@@ -153,7 +162,7 @@ namespace StepAcademyApp
                 for (int i = 0; i < 100; i++)
                 {
                     string login = "teacher" + $"{i + 1}";
-                    string salt = "teacherHorosh" + $"{i + 1}";
+                    string salt = RandomString(128);
                     string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
@@ -187,12 +196,12 @@ namespace StepAcademyApp
                         }
                     );
                     string login = "student" + $"{i + 1}";
-                    string salt = "studentHorosh" + $"{i + 1}";
+                    string salt = RandomString(128);
                     string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
                         {
-                            Гражданин = listStudents.Last(),
+                            Гражданин = listStudents[i],
                             Логин = login,
                             Пароль = password,
                             Соль = salt
@@ -213,12 +222,13 @@ namespace StepAcademyApp
                         Админ = true
                     }
                 );
+                string saltAdmin = RandomString(128);
                 listUchetDat.Add(
                     new Models.УчетныеДанные() { 
                         Гражданин = listPrepod.LastOrDefault(),
                         Логин = "admin",
-                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin"+"adminHorosh", Encoding.UTF8).ToString(),
-                        Соль = "adminHorosh"
+                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin" + saltAdmin, Encoding.UTF8).ToString(),
+                        Соль = saltAdmin
                     }
                 );
                 dbContext.Отделения.AddRange(
