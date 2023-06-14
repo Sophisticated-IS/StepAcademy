@@ -161,9 +161,9 @@ namespace StepAcademyApp
                 List<Models.УчетныеДанные> listUchetDat = new List<Models.УчетныеДанные>();
                 for (int i = 0; i < 100; i++)
                 {
-                    string login = "teacher" + $"{i + 1}";
+                    string login = "Teacher" + $"{i + 1}";
                     string salt = RandomString(128);
-                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
+                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("123" + login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
                         {
@@ -195,9 +195,9 @@ namespace StepAcademyApp
                             Балл = (short)((100 + i + 1) % 100),
                         }
                     );
-                    string login = "student" + $"{i + 1}";
+                    string login = "Student" + $"{i + 1}";
                     string salt = RandomString(128);
-                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
+                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("123" + login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
                         {
