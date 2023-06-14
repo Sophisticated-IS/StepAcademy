@@ -57,7 +57,7 @@ public class LoginWindowVM : ViewModelBase
 
         var user = dbContext.УчетныеДанные.Where(x => x.Логин == Login).Include(x => x.Гражданин).FirstOrDefault();
 
-        string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Login + user.Соль, Encoding.UTF8).ToString();
+        string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Password + user.Соль, Encoding.UTF8).ToString();
 
         if (ps == user.Пароль)
         {
