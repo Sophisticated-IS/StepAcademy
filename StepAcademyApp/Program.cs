@@ -152,13 +152,16 @@ namespace StepAcademyApp
                 List<Models.УчетныеДанные> listUchetDat = new List<Models.УчетныеДанные>();
                 for (int i = 0; i < 100; i++)
                 {
+                    string login = "teacher" + $"{i + 1}";
+                    string salt = "teacherHorosh" + $"{i + 1}";
+                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
                         {
                             Гражданин = listPrepod[i],
-                            Логин = "teacher" + $"{i + 1}",
-                            Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("teacher" + $"{i + 1}", Encoding.UTF8).ToString(),
-                            Соль = "teacherHorosh" + $"{i + 1}"
+                            Логин = login,
+                            Пароль = password,
+                            Соль = salt
                         }
                     );
                 }
@@ -183,13 +186,16 @@ namespace StepAcademyApp
                             Балл = (short)((100 + i + 1) % 100),
                         }
                     );
+                    string login = "student" + $"{i + 1}";
+                    string salt = "studentHorosh" + $"{i + 1}";
+                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(login + salt, Encoding.UTF8).ToString();
                     listUchetDat.Add(
                         new Models.УчетныеДанные()
                         {
                             Гражданин = listStudents.Last(),
-                            Логин = "student" + $"{i + 1}",
-                            Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("student"  + $"{i + 1}", Encoding.UTF8).ToString(),
-                            Соль = "studentHorosh" + $"{i + 1}"
+                            Логин = login,
+                            Пароль = password,
+                            Соль = salt
                         }
                     );
                 }
@@ -211,8 +217,8 @@ namespace StepAcademyApp
                     new Models.УчетныеДанные() { 
                         Гражданин = listPrepod.LastOrDefault(),
                         Логин = "admin",
-                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin", Encoding.UTF8).ToString(),
-                        Соль = "teacherHorosh"
+                        Пароль = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("admin"+"adminHorosh", Encoding.UTF8).ToString(),
+                        Соль = "adminHorosh"
                     }
                 );
                 dbContext.Отделения.AddRange(

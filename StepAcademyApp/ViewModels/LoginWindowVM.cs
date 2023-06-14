@@ -50,18 +50,25 @@ public class LoginWindowVM : ViewModelBase
     {
         using var dbContext = new StepAcademyDB(Program.DbContextOptions);
 
-        string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Password, Encoding.UTF8).ToString();
+        
 
-        var user = dbContext.УчетныеДанные.Where(x => x.Логин == Login && x.Пароль == ps).Include(x => x.Гражданин).FirstOrDefault();
+        var user = dbContext.УчетныеДанные.Where(x => x.Логин == Login).Include(x => x.Гражданин).FirstOrDefault();
 
-        if (user is null)
+        string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Login + user.Соль, Encoding.UTF8).ToString();
+
+        if (ps == user.Пароль)
         {
-            return false;
+            if (user is null)
+            {
+                return false;
+            }
+            else
+            {
+                Program.CurrentUser = user.Гражданин;
+                return true;
+            }
         }
         else
-        {
-            Program.CurrentUser = user.Гражданин;
-            return true;
-        }
+            return false;
     } 
 }
