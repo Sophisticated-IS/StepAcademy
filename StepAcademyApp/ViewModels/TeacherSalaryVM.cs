@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using StepAcademyApp.DataBase;
@@ -39,7 +40,7 @@ internal sealed class TeacherSalaryVM : ViewModelBase
         {
             SalaryCalcMonth = (byte)DateTime.Now.Month;
             SaveSalaryCommand = ReactiveCommand.Create(SaveSalary);
-            CalcSalaryCommand = ReactiveCommand.Create(CalcSalary);
+            CalcSalaryCommand = ReactiveCommand.CreateFromTask(CalcSalary);
             
             func = (x, i) => true;
             
@@ -53,15 +54,15 @@ internal sealed class TeacherSalaryVM : ViewModelBase
         
     }
 
-    private void CalcSalary()
+    private async Task CalcSalary()
     {
         if (SalaryCalcMonth is <= 0 or >= 13) return;
         var salaryCalc = new SalaryCalculator();
-        using var dbContext = new StepAcademyDB(Program.DbContextOptions);
-        var teachers = dbContext.Учителя;
+        await using var dbContext = new StepAcademyDB(Program.DbContextOptions);
+        var teachers = await dbContext.Учителя.ToListAsync();
         foreach (var teacher in teachers)
         {
-            var salary = salaryCalc.Calculate(teacher,SalaryCalcMonth);
+            var salary = await salaryCalc.Calculate(teacher,SalaryCalcMonth);
             РасчетЗарплаты.Add(new TeacherSalary
             {
                 Id = teacher.Id,
