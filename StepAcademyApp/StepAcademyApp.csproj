@@ -11,6 +11,60 @@
         <AvaloniaResource Include="Assets\**" />
         <None Remove=".gitignore" />
         <None Remove="StepAcademyApp.csproj.DotSettings" />
+        <None Update="csv\nagruzka1.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka2.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka3.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka4.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka5.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka6.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka7.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka8.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka9.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\nagruzka10.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Зарплата.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Нагрузка.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Отделение.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Предмет.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Преподаватель.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Специальность.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\Студенты.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="csv\ТипЗанятия.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
@@ -29,9 +83,10 @@
         <PackageReference Include="Material.Avalonia" Version="2.5.1" />
         <PackageReference Include="MessageBox" Version="2.1.0" />
         <PackageReference Include="MessageBox.Avalonia" Version="2.1.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
         <PackageReference Include="Paginator.Avalonia" Version="1.0.0" />
+        <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
         <PackageReference Include="ReactiveUI.Fody" Version="18.4.44" />
         <PackageReference Include="SharpHash" Version="1.2.0" />
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
