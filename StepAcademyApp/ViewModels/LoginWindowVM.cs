@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -22,6 +23,8 @@ public class LoginWindowVM : ViewModelBase
     public string Login { get; set; }
 
     [Reactive]
+    [RegularExpression("^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]+$")]
+    [MinLengthAttribute(10)]
     public string Password { get; set; }
 
     public LoginWindowVM()

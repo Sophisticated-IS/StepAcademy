@@ -30,7 +30,8 @@
                  Classes="revealPasswordButton"
                  assists:TextFieldAssist.Label="Пароль"
                  Text="{Binding Password,Mode=TwoWay}"
-                 PasswordChar="*" />
+                 PasswordChar="*" 
+                 MaxLength="32"/>
         <Button Grid.Row="2" 
                 Margin="0,10,0,0"
                 Classes="Button.Dark"
