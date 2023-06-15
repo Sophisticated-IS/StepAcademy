@@ -20,6 +20,8 @@ public class LoginWindowVM : ViewModelBase
     public ReactiveCommand<Unit, Unit> AuthUserCommand { get; }
     public bool IsAuthorized { get; set; }
 
+    public bool IsBanned {get; set; } = false;
+
     [Reactive]
     public string Login { get; set; }
 
@@ -45,7 +47,13 @@ public class LoginWindowVM : ViewModelBase
         else
         {
             var dialogService = new UserDialogService();
-            await dialogService.ShowMessageForbidden("Ошибка авторизации","Неверный логин или пароль").ConfigureAwait(false);
+            if (IsBanned) {
+                await dialogService.ShowMessageForbidden("Ошибка авторизации","Пользователь заблокирован. Обратитесь к системному администратору.").ConfigureAwait(false);
+            }
+            else
+            {
+                await dialogService.ShowMessageForbidden("Ошибка авторизации","Неверный логин или пароль").ConfigureAwait(false);
+            }
         }
 
     }
@@ -58,34 +66,59 @@ public class LoginWindowVM : ViewModelBase
 
         string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Password + user.Соль, Encoding.UTF8).ToString();
 
-        if (ps == user.Пароль)
+        if (user is null)
         {
-
             Models.Аудит аудит;
-
-            if (user is null)
+            аудит = new Models.Аудит{
+                Message = $"Error of login by {Login}",
+                Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+            };
+            dbContext.Аудит.Add(аудит);
+            dbContext.SaveChanges();
+            return false;
+        }
+        else
+        {
+            if (user.isBanned != true)
             {
-                аудит = new Models.Аудит{
-                    Message = $"Error of login by {Login}",
-                    Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
-                };
-                dbContext.Аудит.Add(аудит);
-                dbContext.SaveChanges();
-                return false;
+                if (ps == user.Пароль)
+                {
+                    Models.Аудит аудит;
+                    аудит = new Models.Аудит{
+                        Message = $"Login by {Login}",
+                        Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+                    };
+                    user.NumberOfBadLogging = 0;
+                    dbContext.УчетныеДанные.Update(user);
+                    dbContext.Аудит.Add(аудит);
+                    dbContext.SaveChanges();
+                    Program.CurrentUser = user.Гражданин;
+                    return true;
+                }
+                else
+                {
+                    Models.Аудит аудит;
+                    аудит = new Models.Аудит{
+                            Message = $"Error of login by {Login}",
+                            Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+                        };
+                    dbContext.Аудит.Add(аудит);
+                    user.NumberOfBadLogging++;
+                    if (user.NumberOfBadLogging >= 5)
+                    {
+                        IsBanned = true;
+                        user.isBanned = true;
+                    }
+                    dbContext.УчетныеДанные.Update(user);
+                    dbContext.SaveChanges();
+                    return false;
+                }
             }
             else
             {
-                аудит = new Models.Аудит{
-                    Message = $"Login by {Login}",
-                    Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
-                };
-                dbContext.Аудит.Add(аудит);
-                dbContext.SaveChanges();
-                Program.CurrentUser = user.Гражданин;
-                return true;
+                IsBanned = true;
+                return false;
             }
         }
-        else
-            return false;
     } 
 }

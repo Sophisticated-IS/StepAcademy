@@ -76,7 +76,7 @@ namespace StepAcademyApp
                     listOplataZan.Add(
                         new Models.ОплатаЗанятия
                         {
-                            Id = (uint)(i + 1),
+                            //Id = (uint)(i + 1),
                             IdПредмет = listPredmet[i % 10].Id,
                             Предмет = listPredmet[i % 10],
                             IdТипЗанятия = listTipZan[i % 10].Id,
@@ -87,7 +87,7 @@ namespace StepAcademyApp
                     listGrup.Add(
                             new Models.ГруппаСтудентов
                             {
-                                Id = (uint)(i + 1),
+                                //Id = (uint)(i + 1),
                                 ОтделениеId = listOtdel[i % 10].Id,
                                 Отделение = listOtdel[i % 10],
                                 СпециальностьId = listSpecial[i % 10].Id,
@@ -174,40 +174,6 @@ namespace StepAcademyApp
                         }
                     );
                 }
-                List<Models.Студент> listStudents = File.ReadAllLines("csv\\Студенты.csv")
-                                            .Skip(1)
-                                            .Select(v => Models.Студент.FromCsv(v))
-                                            .ToList();
-                List<Models.Оценка> listOcen = new List<Models.Оценка>();
-                for(int i = 0; i < 100; i++)
-                {
-                    listStudents[i].Группа = listGrup[(int)listStudents[i].IdГруппы - 1];
-                    listOcen.Add(
-                        new Models.Оценка
-                        {
-                            Id = (uint)(i + 1),
-                            IdСтудента = listStudents[i].Id,
-                            Студент = listStudents[i],
-                            IdГруппы = listStudents[i].IdГруппы.HasValue ? listStudents[i].IdГруппы.Value : default,
-                            Группа = listStudents[i].Группа,
-                            IdПредмета = listPredmet[i % 10].Id,
-                            Предмет = listPredmet[i % 10],
-                            Балл = (short)((100 + i + 1) % 100),
-                        }
-                    );
-                    string login = "Student" + $"{i + 1}";
-                    string salt = RandomString(128);
-                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("123" + login + salt, Encoding.UTF8).ToString();
-                    listUchetDat.Add(
-                        new Models.УчетныеДанные()
-                        {
-                            Гражданин = listStudents[i],
-                            Логин = login,
-                            Пароль = password,
-                            Соль = salt
-                        }
-                    );
-                }
                 listPrepod.Add(
                     new Models.Преподаватель
                     {
@@ -231,6 +197,7 @@ namespace StepAcademyApp
                         Соль = saltAdmin
                     }
                 );
+
                 dbContext.Отделения.AddRange(
                     listOtdel
                     );
@@ -258,6 +225,43 @@ namespace StepAcademyApp
                 dbContext.Нагрузка.AddRange(
                     listNagruzka
                     );
+                dbContext.SaveChanges();
+
+                List<Models.Студент> listStudents = File.ReadAllLines("csv\\Студенты.csv")
+                                            .Skip(1)
+                                            .Select(v => Models.Студент.FromCsv(v))
+                                            .ToList();
+                List<Models.Оценка> listOcen = new List<Models.Оценка>();
+                for(int i = 0; i < 100; i++)
+                {
+                    //listStudents[i].Id = (uint)(listUchetDat.Count + 1);
+                    listStudents[i].Группа = listGrup[(int)listStudents[i].IdГруппы - 1];
+                    listOcen.Add(
+                        new Models.Оценка
+                        {
+                            //Id = (uint)(i + 1),
+                            IdСтудента = listStudents[i].Id,
+                            Студент = listStudents[i],
+                            IdГруппы = listStudents[i].IdГруппы.HasValue ? listStudents[i].IdГруппы.Value : default,
+                            Группа = listStudents[i].Группа,
+                            IdПредмета = listPredmet[i % 10].Id,
+                            Предмет = listPredmet[i % 10],
+                            Балл = (short)((100 + i + 1 + random.Next(0, 100)) % 100),
+                        }
+                    );
+                    string login = "Student" + $"{i + 1}";
+                    string salt = RandomString(128);
+                    string password = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString("123" + login + salt, Encoding.UTF8).ToString();
+                    listUchetDat.Add(
+                        new Models.УчетныеДанные()
+                        {
+                            Гражданин = listStudents[i],
+                            Логин = login,
+                            Пароль = password,
+                            Соль = salt
+                        }
+                    );
+                }
                 dbContext.Студенты.AddRange(
                     listStudents
                     );
@@ -266,7 +270,7 @@ namespace StepAcademyApp
                     );
                 dbContext.Оценки.AddRange(
                     listOcen
-                    );        
+                    );   
                 dbContext.SaveChanges();
             }
         }
