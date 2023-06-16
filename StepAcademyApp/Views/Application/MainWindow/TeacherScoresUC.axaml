@@ -23,20 +23,24 @@
                   Items="{Binding Оценки,Mode=OneWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО студента"
+                                    IsReadOnly="True"
                                     Width="*"
                                     Binding="{Binding ФИОСтудента,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Специальность"
+                                    IsReadOnly="True"
                                     Width="*"
                                     Binding="{Binding Специальность,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Отделение"
+                                    IsReadOnly="True"
                                     Width="*" 
                                     Binding="{Binding Отделение,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Название предмета"
+                                    IsReadOnly="True"
                                     Width="*" 
                                     Binding="{Binding НазваниеПредмета,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Оценка"
                                     Width="*" 
-                                    Binding="{Binding Оценка,Mode=OneWay}"/>
+                                    Binding="{Binding Оценка,Mode=TwoWay}"/>
             </DataGrid.Columns>
             
         </DataGrid>
