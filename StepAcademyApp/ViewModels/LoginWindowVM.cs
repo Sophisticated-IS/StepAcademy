@@ -10,6 +10,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SharpHash.Base;
 using StepAcademyApp.DataBase;
+using StepAcademyApp.Models.LocalizedAttributes;
 using StepAcademyApp.Services;
 using ViewModelBase = StepAcademyApp.ViewModels.ViewModelBase;
 
@@ -23,11 +24,12 @@ public class LoginWindowVM : ViewModelBase
     public bool IsBanned {get; set; } = false;
 
     [Reactive]
+    [MinLengthAttributeCustom(1)]
     public string Login { get; set; }
 
     [Reactive]
-    [RegularExpression("^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]+$")]
-    [MinLengthAttribute(10)]
+    [RegularExpressionPassword("^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]+$")]
+    [MinLengthAttributeCustom(10)]
     public string Password { get; set; }
 
     public LoginWindowVM()
