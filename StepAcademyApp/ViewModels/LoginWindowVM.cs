@@ -108,6 +108,11 @@ public class LoginWindowVM : ViewModelBase
                     {
                         IsBanned = true;
                         user.isBanned = true;
+                        аудит = new Models.Аудит{
+                            Message = $"Ban user by login - {Login}",
+                            Time = DateTime.SpecifyKind(System.DateTime.Now, DateTimeKind.Utc)
+                        };
+                    dbContext.Аудит.Add(аудит);
                     }
                     dbContext.УчетныеДанные.Update(user);
                     dbContext.SaveChanges();
