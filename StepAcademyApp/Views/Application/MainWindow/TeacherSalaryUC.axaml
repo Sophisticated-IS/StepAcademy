@@ -41,12 +41,13 @@
         <Grid Grid.Row="4" RowDefinitions="Auto,15,Auto" IsVisible="{Binding IsAdmin,Mode=OneWay}">
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <TextBlock Text="Месяц рассчета:" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding SalaryCalcMonth,Mode=TwoWay}"/>
-            </StackPanel>
+                <NumericUpDown Value="{Binding SalaryCalcMonth,Mode=TwoWay}" Maximum="12"/>
+                </StackPanel>
             
             <DockPanel Grid.Row="2">
                 <Button Content="Рассчитать" DockPanel.Dock="Left" Command="{Binding CalcSalaryCommand,Mode=OneWay}"/>
-                <Button Content="Сохранить" DockPanel.Dock="Right" Command="{Binding SaveSalaryCommand,Mode=OneWay}"/>
+                <Button Content="Сохранить" DockPanel.Dock="Right" Command="{Binding SaveSalaryCommand,Mode=OneWay}"
+                        IsEnabled="{Binding !CalcSalaryCommand.IsExecuting^,Mode=OneWay}"/>
             </DockPanel>
         </Grid>
     </Grid>

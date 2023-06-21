@@ -26,17 +26,19 @@ public class LoginWindowVM : ViewModelBase
 
     [Reactive]
     [MinLengthAttributeCustom(1)]
-    public string Login { get; set; } = "";
+    public string Login { get; set; } 
 
     [Reactive]
     [RegularExpressionPassword("^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]+$")]
     [MinLengthAttributeCustom(10)]
-    public string Password { get; set; } = "";
+    public string Password { get; set; }
 
     public LoginWindowVM()
     {
         var canSignIn = this.WhenAnyValue(v => v.Login, v => v.Password, (x, y) =>
-            !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y));
+            !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y) 
+                                     && Validator.TryValidateObject(this, new ValidationContext(this),
+                new List<ValidationResult>()));
         AuthUserCommand = ReactiveCommand.CreateFromTask(AuthUser, canSignIn);
     }
 
