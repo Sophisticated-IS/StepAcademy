@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
@@ -25,12 +26,12 @@ public class LoginWindowVM : ViewModelBase
 
     [Reactive]
     [MinLengthAttributeCustom(1)]
-    public string Login { get; set; }
+    public string Login { get; set; } = "";
 
     [Reactive]
     [RegularExpressionPassword("^(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]+$")]
     [MinLengthAttributeCustom(10)]
-    public string Password { get; set; }
+    public string Password { get; set; } = "";
 
     public LoginWindowVM()
     {
@@ -66,6 +67,8 @@ public class LoginWindowVM : ViewModelBase
 
         var user = dbContext.УчетныеДанные.Where(x => x.Логин == Login).Include(x => x.Гражданин).FirstOrDefault();
 
+        if (user is null) return false;
+        
         string ps = HashFactory.Crypto.CreateGOST3411_2012_512().ComputeString(Password + user.Соль, Encoding.UTF8).ToString();
 
         if (user is null)
