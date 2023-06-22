@@ -1,5 +1,5 @@
 Id,СерияНомерПаспорта,Имя,Фамилия,Отчество,ДатаРождения,НомерТелефона,Admin,Стаж
-1,1,Clotilda,Edmée,Burt,1952-11-06,9256343585,true,365 days
+1,1,Clotilda,Edmée,Burt,1952-11-06,9256343585,false,365 days
 2,2,Gertrudis,Maëlyss,Ebeneser,1963-04-03,6182212180,false,365 days
 3,3,Shellie,Lóng,Blake,1956-08-01,1886078591,false,365 days
 4,4,Karisa,Annotée,Stan,1955-12-21,1842005037,false,365 days
