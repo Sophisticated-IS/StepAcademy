@@ -29,7 +29,7 @@
                 <DataGridTextColumn Header="Название предмета"
                                     Width="*" 
                                     Binding="{Binding НазваниеПредмета,Mode=OneWay}"/>    
-                <DataGridTextColumn Header="ФИОУчителя"
+                <DataGridTextColumn Header="ФИО Учителя"
                                     Width="*" 
                                     Binding="{Binding ФИОУчителя,Mode=OneWay}"/>
                 <DataGridTextColumn Header="Оценка"
