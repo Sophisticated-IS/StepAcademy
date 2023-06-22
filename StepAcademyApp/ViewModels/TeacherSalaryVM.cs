@@ -36,25 +36,31 @@ internal sealed class TeacherSalaryVM : ViewModelBase
         IsAdmin = преподаватель.Админ;
 
         Func<Зарплата, int, bool> func;
+        LoadSalary();
+    }
+
+    private void LoadSalary()
+    {
+        РасчетЗарплаты.Clear();
+        Func<Зарплата, int, bool> func;
         if (IsAdmin)
         {
             SalaryCalcMonth = (byte)DateTime.Now.Month;
             SaveSalaryCommand = ReactiveCommand.Create(SaveSalary);
             CalcSalaryCommand = ReactiveCommand.CreateFromTask(CalcSalary);
             func = (x, i) => true;
-            
         }
         else
         {
-            func = (x, i) => x.IdУчитель == Program.CurrentUser.Id; 
+            func = (x, i) => x.IdУчитель == Program.CurrentUser.Id;
         }
-        
+
         ReadSalary(func);
-        
     }
 
     private async Task CalcSalary()
     {
+        LoadSalary();
         if (SalaryCalcMonth is <= 0 or >= 13) return;
         var salaryCalc = new SalaryCalculator();
         await using var dbContext = new StepAcademyDB(Program.DbContextOptions);
@@ -78,31 +84,39 @@ internal sealed class TeacherSalaryVM : ViewModelBase
 
     private void SaveSalary()
     {
-        using var dbContext = new StepAcademyDB(Program.DbContextOptions);
-        var salaryforMonth = РасчетЗарплаты.Where(x => x.Месяц == SalaryCalcMonth).ToList();
-        foreach (var teacherSalary in salaryforMonth)
+        try
         {
-            var firstOrDefault = dbContext.Зарплаты.FirstOrDefault(x=>x.IdУчитель == teacherSalary.Id && x.Month == SalaryCalcMonth);
-
-            Зарплата зп;
-            if (firstOrDefault is null)
+            using var dbContext = new StepAcademyDB(Program.DbContextOptions);
+            var salaryforMonth = РасчетЗарплаты.Where(x => x.Месяц == SalaryCalcMonth).ToList();
+            foreach (var teacherSalary in salaryforMonth)
             {
-                зп = new Зарплата
+                var firstOrDefault = dbContext.Зарплаты.FirstOrDefault(x=>x.IdУчитель == teacherSalary.Id 
+                                                                          && x.Month == SalaryCalcMonth);
+
+                Зарплата зп;
+                if (firstOrDefault is null)
                 {
-                    IdУчитель = teacherSalary.Id,
-                    Year = (uint)DateTime.Now.Year,
-                    Month = SalaryCalcMonth,
-                    СуммаВыплат = teacherSalary.Зарплата
-                };
-                dbContext.Зарплаты.Add(зп);
+                    зп = new Зарплата
+                    {
+                        IdУчитель = teacherSalary.Id,
+                        Year = (uint)DateTime.Now.Year,
+                        Month = SalaryCalcMonth,
+                        СуммаВыплат = teacherSalary.Зарплата
+                    };
+                    dbContext.Зарплаты.Add(зп);
+                }
+                else
+                {
+                    firstOrDefault.СуммаВыплат = teacherSalary.Зарплата;
+                    dbContext.Зарплаты.Update(firstOrDefault);
+                }
+                
+                dbContext.SaveChanges();
             }
-            else
-            {
-                firstOrDefault.СуммаВыплат = teacherSalary.Зарплата;
-                dbContext.Зарплаты.Update(firstOrDefault);
-            }
-
-            dbContext.SaveChanges();
+        }
+        catch (Exception exception)
+        {
+            //ignored
         }
     }
 
