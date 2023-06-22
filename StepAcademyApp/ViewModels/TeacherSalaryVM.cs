@@ -41,7 +41,6 @@ internal sealed class TeacherSalaryVM : ViewModelBase
             SalaryCalcMonth = (byte)DateTime.Now.Month;
             SaveSalaryCommand = ReactiveCommand.Create(SaveSalary);
             CalcSalaryCommand = ReactiveCommand.CreateFromTask(CalcSalary);
-            
             func = (x, i) => true;
             
         }
@@ -73,9 +72,8 @@ internal sealed class TeacherSalaryVM : ViewModelBase
                 
             });
         }
-
-
-
+        var dialogService = new UserDialogService();
+        await dialogService.ShowMessageInfo("Расчет", "Расчет проведен успешно").ConfigureAwait(false);
     }
 
     private void SaveSalary()
