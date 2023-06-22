@@ -53,7 +53,7 @@
             </TabItem>
             
             <TabItem Header="Выставление оценок учителя"  IsVisible="{Binding IsSimpleTeacher,Mode=OneTime}">
-                    <application:TeacherScoresUC IsVisible="{Binding !IsAdminTeacher,Mode=OneTime}"/>
+                    <application:TeacherScoresUC />
             </TabItem>
             
             <TabItem Header="Расписание учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">

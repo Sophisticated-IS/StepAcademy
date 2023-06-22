@@ -33,10 +33,7 @@ namespace StepAcademyApp.ViewModels
                 RoleName = "Преподаватель - Администратор";
                 IsAdminTeacher = true;
             }
-            else
-            {
-                IsSimpleTeacher = true;
-            }
+            IsSimpleTeacher = Program.CurrentUser is Преподаватель п && !п.Админ;
         }
     }
 }
