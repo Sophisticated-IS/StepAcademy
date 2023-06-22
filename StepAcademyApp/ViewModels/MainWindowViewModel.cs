@@ -14,6 +14,13 @@ namespace StepAcademyApp.ViewModels
         [Reactive]
         public bool IsStudentRole { get; set; }
         
+        [Reactive]
+        public bool IsAdminTeacher { get; set; }
+        
+        
+        [Reactive]
+        public bool IsSimpleTeacher { get; set; }
+        
         
         public MainWindowViewModel()
         {
@@ -24,6 +31,11 @@ namespace StepAcademyApp.ViewModels
             if (Program.CurrentUser is Преподаватель преподаватель && преподаватель.Админ)
             {
                 RoleName = "Преподаватель - Администратор";
+                IsAdminTeacher = true;
+            }
+            else
+            {
+                IsSimpleTeacher = true;
             }
         }
     }

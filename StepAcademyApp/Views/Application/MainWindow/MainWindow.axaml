@@ -52,8 +52,8 @@
                     <application:StudentScheduleUC/>
             </TabItem>
             
-            <TabItem Header="Выставление оценок учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">
-                    <application:TeacherScoresUC/>
+            <TabItem Header="Выставление оценок учителя"  IsVisible="{Binding IsSimpleTeacher,Mode=OneTime}">
+                    <application:TeacherScoresUC IsVisible="{Binding !IsAdminTeacher,Mode=OneTime}"/>
             </TabItem>
             
             <TabItem Header="Расписание учителя"  IsVisible="{Binding !IsStudentRole,Mode=OneTime}">

@@ -20,6 +20,7 @@
                   CanUserResizeColumns="False"
                   CanUserSortColumns="True"
                   AutoGenerateColumns="False"
+                  IsReadOnly="True"
                   Items="{Binding РасчетЗарплаты,Mode=OneWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО"
