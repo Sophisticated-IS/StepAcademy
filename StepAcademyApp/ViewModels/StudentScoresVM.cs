@@ -18,6 +18,7 @@ internal sealed class StudentScoresVM : ViewModelBase
         public string Специальность { get; set; }
         public string Отделение { get; set; }
         public string НазваниеПредмета { get; set; }
+        public string ФИОУчителя { get; set; }
         public string Оценка { get; set; }
     } 
     public StudentScoresVM()
