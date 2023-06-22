@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using StepAcademyApp.DataBase;
 using StepAcademyApp.Models;
+using StepAcademyApp.Services;
 
 namespace StepAcademyApp.ViewModels;
 
@@ -14,6 +16,7 @@ internal sealed class TeacherScheduleVM : ViewModelBase
     
     internal sealed class TeachSchedule
     {
+        public  uint IdНагрузки { get; set; }
         public string Начало { get; set; }
         public string Конец { get; set; }
         public string ФИОПрепода { get; set; }
@@ -23,16 +26,26 @@ internal sealed class TeacherScheduleVM : ViewModelBase
 
     public ObservableCollection<TeachSchedule> Расписание { get; } = new();
 
+    public ReactiveCommand<Unit, Unit> RemoveClassCommand { get; }
+    public ReactiveCommand<Unit, Unit> AddClassCommand { get; }
+
     [Reactive]
     public string CurrentDateTime { get; set; }
     public bool IsTeacherAdmin { get; set; }
+
+
+    public TeachSchedule? SelectedClass { get; set; }
     
     [Reactive]
     public int PageNumberDay { get; set; }
     public TeacherScheduleVM()
     {
-        if (Program.CurrentUser is not Преподаватель) return;
+        if (Program.CurrentUser is not Преподаватель преподаватель) return;
 
+        IsTeacherAdmin = преподаватель.Админ;
+
+        RemoveClassCommand = ReactiveCommand.Create(RemoveClass);
+        AddClassCommand = ReactiveCommand.Create(AddClass);
         this.WhenAnyValue(x => x.PageNumberDay).Subscribe(x =>
         {
             if (x<=0)
@@ -57,6 +70,7 @@ internal sealed class TeacherScheduleVM : ViewModelBase
             {
                 Расписание.Add(new TeacherScheduleVM.TeachSchedule()
                 {
+                    IdНагрузки = item.Id,
                     Начало = item.ВремяНачалаЗанятия.TimeOfDay.ToString(),
                     Конец = item.ВремяКонцаЗанятия.TimeOfDay.ToString(),
                     ФИОПрепода = item.Преподаватель.Имя + " " + item.Преподаватель.Фамилия + " " + item.Преподаватель.Отчество,
@@ -71,5 +85,36 @@ internal sealed class TeacherScheduleVM : ViewModelBase
         
         PageNumberDay = 1;
 
+    }
+
+    private void AddClass()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void RemoveClass()
+    {
+        if (SelectedClass is null) return;
+
+        try
+        {
+            using var dbContext = new StepAcademyDB(Program.DbContextOptions);
+            
+            var dialogService = new UserDialogService();
+            dialogService.ShowMessageInfo("Удаление", $"занятие было успешно удалено!");
+            
+            var load = dbContext.Нагрузка.FirstOrDefault(l=>l.Id == SelectedClass.IdНагрузки);
+
+            if (load != default)
+            {
+                dbContext.Нагрузка.Remove(load);
+                dbContext.SaveChanges();   
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

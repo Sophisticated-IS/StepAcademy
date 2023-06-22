@@ -12,7 +12,7 @@
         <viewModels:TeacherScheduleVM />
     </UserControl.DataContext>
 
-    <Grid Margin="5" RowDefinitions="*,Auto,10,Auto">
+    <Grid Margin="5" RowDefinitions="*,Auto,10,Auto,10,Auto">
         
         <Grid RowDefinitions="Auto,*,Auto">
             <TextBlock Grid.Row="0"
@@ -27,7 +27,8 @@
                       CanUserSortColumns="True"
                       AutoGenerateColumns="False"
                       IsReadOnly="{Binding !IsTeacherAdmin,Mode=OneWay}"
-                      Items="{Binding Расписание,Mode=OneWay}">
+                      Items="{Binding Расписание,Mode=OneWay}"
+                      SelectedItem="{Binding SelectedClass,Mode=OneWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Начало"
                                         Width="*"
@@ -58,12 +59,9 @@
                                PageNumb="{Binding PageNumberDay,Mode=TwoWay}">
         </view:PaginatorControl>
         
-        
-        <Button Grid.Row="3"  
-                Content="Отмена" HorizontalAlignment="Left"
-                IsVisible="{Binding IsTeacherAdmin,Mode=OneWay}"/>
-        <Button Grid.Row="3"  
-                Content="Сохранить" HorizontalAlignment="Right"
-                IsVisible="{Binding IsTeacherAdmin,Mode=OneWay}"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="10" IsVisible="{Binding IsTeacherAdmin,Mode=OneWay}">
+            <Button Content="Добавить занятие" Command="{Binding AddClassCommand,Mode=OneTime}"/>
+            <Button Content="Удалить" Command="{Binding RemoveClassCommand,Mode=OneTime}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
