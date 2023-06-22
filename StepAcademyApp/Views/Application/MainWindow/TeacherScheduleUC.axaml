@@ -28,7 +28,7 @@
                       AutoGenerateColumns="False"
                       IsReadOnly="{Binding !IsTeacherAdmin,Mode=OneWay}"
                       Items="{Binding Расписание,Mode=OneWay}"
-                      SelectedItem="{Binding SelectedClass,Mode=OneWay}">
+                      SelectedItem="{Binding SelectedClass,Mode=TwoWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Начало"
                                         Width="*"

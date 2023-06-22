@@ -46,6 +46,24 @@ internal sealed class TeacherScheduleVM : ViewModelBase
 
         RemoveClassCommand = ReactiveCommand.Create(RemoveClass);
         AddClassCommand = ReactiveCommand.Create(AddClass);
+        
+        
+        
+        Func<Нагрузка, int, bool> func;
+        if (IsTeacherAdmin)
+        {
+            func = (x, i) => x.ВремяНачалаЗанятия.Date.Day == PageNumberDay
+                             && x.ВремяКонцаЗанятия.Date.Month == DateTime.Now.Month
+                             && x.ВремяКонцаЗанятия.Date.Year == DateTime.Now.Year;
+        }
+        else
+        {
+            func = (x, i) =>x.IdПреподавателя == Program.CurrentUser.Id
+                            && x.ВремяНачалаЗанятия.Date.Day == PageNumberDay
+                            && x.ВремяКонцаЗанятия.Date.Month == DateTime.Now.Month
+                            && x.ВремяКонцаЗанятия.Date.Year == DateTime.Now.Year;
+        }
+        
         this.WhenAnyValue(x => x.PageNumberDay).Subscribe(x =>
         {
             if (x<=0)
@@ -57,13 +75,10 @@ internal sealed class TeacherScheduleVM : ViewModelBase
             CurrentDateTime = dt.AddDays(-dt.Day).AddDays(PageNumberDay).ToString("dddd, dd MMMM, yyyy");
             using var dbContext = new StepAcademyDB(Program.DbContextOptions);
             var schedule = dbContext.Нагрузка
-                                    .Where(x => x.IdПреподавателя == Program.CurrentUser.Id
-                                                && x.ВремяНачалаЗанятия.Date.Day == PageNumberDay
-                                                && x.ВремяКонцаЗанятия.Date.Month == DateTime.Now.Month
-                                                && x.ВремяКонцаЗанятия.Date.Year == DateTime.Now.Year)
                                     .Include(x=>x.Преподаватель)
                                     .Include(x=>x.ТипЗанятия)
                                     .Include(x=>x.Предмет)
+                                    .Where(func)
                                     .ToList();
             Расписание.Clear();
             foreach (var item in schedule)
@@ -101,7 +116,7 @@ internal sealed class TeacherScheduleVM : ViewModelBase
             using var dbContext = new StepAcademyDB(Program.DbContextOptions);
             
             var dialogService = new UserDialogService();
-            dialogService.ShowMessageInfo("Удаление", $"занятие было успешно удалено!");
+            dialogService.ShowMessageInfo("Удаление", $"Занятие было удалено успешно!");
             
             var load = dbContext.Нагрузка.FirstOrDefault(l=>l.Id == SelectedClass.IdНагрузки);
 
