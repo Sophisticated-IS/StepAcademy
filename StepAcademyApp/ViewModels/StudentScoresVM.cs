@@ -38,17 +38,23 @@ internal sealed class StudentScoresVM : ViewModelBase
                                   .Include(x=>x.Группа.Специальность)
                                   .Include(x=>x.Группа.Отделение)
                                   .Include(x=>x.Предмет)
-                                  
                                   .ToList();
             Оценки.Clear();
             foreach (var score in scores)
             {
+                var nagruz = dbContext.Нагрузка.Where(
+                    x => x.IdГруппы == score.Группа.Id
+                ).FirstOrDefault();
+                var teacher = dbContext.Учителя.Where(
+                    x => x.Id == nagruz.IdПреподавателя
+                ).FirstOrDefault();
                 Оценки.Add(new StudentScore
                 {
                     НазваниеПредмета = score.Предмет.Название,
                     Специальность = score.Группа.Специальность.Название,
                     Отделение = score.Группа.Отделение.Название,
-                    Оценка = score.Балл.ToString()
+                    Оценка = score.Балл.ToString(),
+                    ФИОУчителя = teacher.Фамилия + " " + teacher.Имя + " "+ teacher.Отчество
                 });
             }
         }
