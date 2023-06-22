@@ -46,8 +46,8 @@
         </DataGrid>
         
         <DockPanel Grid.Row="4" HorizontalAlignment="Stretch">
-            <Button Content="Отмена" DockPanel.Dock="Left"/>
-            <Button Content="Сохранить" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+            <Button Content="Отмена" DockPanel.Dock="Left" Command="{Binding CancelChangesCommand,Mode=OneTime}"/>
+            <Button Content="Сохранить" DockPanel.Dock="Right" HorizontalAlignment="Right" Command="{Binding SaveChangesCommand,Mode=OneTime}"/>
         </DockPanel>
     </Grid>
 </UserControl>
