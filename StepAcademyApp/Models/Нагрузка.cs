@@ -2,7 +2,7 @@
 
 namespace StepAcademyApp.Models;
 
-internal sealed class Нагрузка
+public sealed class Нагрузка
 {
     public uint Id { get; set; }
     public uint IdПреподавателя { get; set; }

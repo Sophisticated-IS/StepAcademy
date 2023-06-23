@@ -2,7 +2,7 @@
 
 namespace StepAcademyApp.Models;
 
-internal sealed class Преподаватель : Гражданин
+public sealed class Преподаватель : Гражданин
 {
     public string НомерТелефона  { get; set; }
     public bool Админ { get; set; }

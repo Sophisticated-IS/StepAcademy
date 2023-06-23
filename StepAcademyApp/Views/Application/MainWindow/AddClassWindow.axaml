@@ -1,0 +1,77 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="StepAcademyApp.Views.Application.AddClassWindow"
+        x:Name="Root"
+        MaxWidth="350"
+        MaxHeight="400"
+        CanResize="True"
+        WindowStartupLocation="CenterOwner"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="Добавление занятия в расписание">
+    
+    <Grid Margin="5">
+        
+        <StackPanel Orientation="Vertical" Spacing="10" >
+            <TextBlock FontWeight="Bold" Text="Время начала занятия:"/>
+            <TimePicker SelectedTime="{Binding SelectedStartTime,Mode=TwoWay}"/>
+            
+            
+            <TextBlock FontWeight="Bold" Text="Время конца занятия:"/>
+            <TimePicker SelectedTime="{Binding SelectedEndTime,Mode=TwoWay}"/>
+            
+            <ComboBox Width="250" 
+                      HorizontalAlignment="Left"
+                      Classes="Outline"
+                      assists:ComboBoxAssist.Label="Преподаватель"
+                      SelectedItem="{Binding SelectedTeacher,Mode=TwoWay}"
+                      Items="{Binding Teachers,Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ФИОПрепода,Mode=OneTime}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <ComboBox Width="250" 
+                      HorizontalAlignment="Left"
+                      Classes="Outline"
+                      assists:ComboBoxAssist.Label="Предмет"
+                      SelectedItem="{Binding SelectedSubject,Mode=TwoWay}"
+                      Items="{Binding Subjects,Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Название,Mode=OneTime}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            
+            <ComboBox Width="250" 
+                      HorizontalAlignment="Left"
+                      Classes="Outline"
+                      assists:ComboBoxAssist.Label="Тип занятия"
+                      SelectedItem="{Binding SelectedSubjType,Mode=TwoWay}"
+                      Items="{Binding SubjectTypes,Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Название,Mode=OneTime}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+                      
+                      
+            
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <Button Content="Добавить" Command="{Binding AddClassCommand,Mode=OneTime}"/>
+                <Button Content="Отмена" Command="{Binding CancelCommand,Mode=OneTime}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</Window>
